@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ai.nhg.capturepoc">
+
+    <!-- Foreground service hosting the MediaProjection audio session. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <!-- Notification visibility and interactive recording controls. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Keeps the CPU alive during recording. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Optional floating recording bubble (opt-in only via system settings). -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!--
+      Deliberately NOT declared:
+        android.permission.RECORD_AUDIO
+        android.permission.INTERNET
+        storage permissions
+      The capture path uses AudioPlaybackCaptureConfiguration (REMOTE_SUBMIX),
+      which AOSP validates with the MediaProjection token instead of RECORD_AUDIO.
+    -->
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_nhg"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NhgPoc"
+        android:usesCleartextTraffic="false"
+        android:extractNativeLibs="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".CaptureService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            android:stopWithTask="false" />
+
+        <provider
+            android:name=".NhgFileProvider"
+            android:authorities="ai.nhg.capturepoc.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+
+</manifest>

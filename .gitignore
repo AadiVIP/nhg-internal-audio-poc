@@ -1,0 +1,17 @@
+build/
+dist/
+evidence/
+keystore/
+release-assets/
+*.jks
+*.keystore
+*.p12
+*.idsig
+*.log
+*.wav
+*.m4a
+*.mp3
+__pycache__/
+*.pyc
+.env
+.DS_Store
